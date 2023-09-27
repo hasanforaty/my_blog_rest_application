@@ -3,6 +3,7 @@ package com.hasan.foraty.myblogapplication.controller;
 import com.hasan.foraty.myblogapplication.payload.PaginationResponse;
 import com.hasan.foraty.myblogapplication.payload.PostDto;
 import com.hasan.foraty.myblogapplication.service.PostService;
+import com.hasan.foraty.myblogapplication.utils.AppConstance;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,10 +58,10 @@ public class PostController {
    */
   @GetMapping
   ResponseEntity<PaginationResponse<PostDto>> getPosts(
-      @RequestParam(value = "pageNumber",defaultValue = "0",required = false) int pageNum,
-      @RequestParam(value = "pageSize",defaultValue = "10",required = false)int pageSize,
-      @RequestParam(value = "sortBy",defaultValue = "id",required = false)String sortBy,
-      @RequestParam(value = "sortDir",defaultValue = "asc",required = false)String sortDir
+      @RequestParam(value = "pageNumber",defaultValue = AppConstance.DEFAULT_PAGE_NUMBER,required = false) int pageNum,
+      @RequestParam(value = "pageSize",defaultValue = AppConstance.DEFAULT_PAGE_SIZE,required = false)int pageSize,
+      @RequestParam(value = "sortBy",defaultValue = AppConstance.DEFAULT_SORT_BY,required = false)String sortBy,
+      @RequestParam(value = "sortDir",defaultValue = AppConstance.DEFAULT_SORT_DIRECTION,required = false)String sortDir
       ){
 
     return new ResponseEntity<>(postService.getPostsWithPagination(pageNum,pageSize,sortBy,sortDir),HttpStatus.OK);

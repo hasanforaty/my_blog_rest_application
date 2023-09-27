@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PostService {
     PostDto createPost(PostDto postDto);
-    PaginationResponse<PostDto> getPostsWithPagination(int pageNumber,int pageSize);
+    PaginationResponse<PostDto> getPostsWithPagination(int pageNumber,int pageSize,String sortBy,String sortDirection);
     List<PostDto> getAllPost();
     PostDto getPostById(Long id);
     PostDto updatePost(PostDto postDto,Long id);

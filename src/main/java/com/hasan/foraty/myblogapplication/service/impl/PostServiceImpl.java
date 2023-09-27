@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,9 +33,21 @@ public class PostServiceImpl implements
   }
 
   @Override
-  public PaginationResponse<PostDto> getPostsWithPagination(int pageNumber,int pageSize) {
+  public PaginationResponse<PostDto> getPostsWithPagination(int pageNumber,int pageSize,String sortBy,String sortDirection) {
 
-    Pageable pageable = PageRequest.of(pageNumber,pageSize);
+    //check for sort by Direction.
+    Direction direction;
+    if(sortDirection.equalsIgnoreCase("asc")){
+      direction=Direction.ASC;
+    }else if (sortDirection.equalsIgnoreCase("desc")){
+      direction=Direction.DESC;
+    }else {
+      throw new ResourceNotFoundException(
+          "Direction","sortBy",sortDirection
+      );
+    }
+
+    Pageable pageable = PageRequest.of(pageNumber,pageSize,Sort.by(direction,sortBy));
     Page<Post> pages= postRepository.findAll(pageable);
     return new PaginationResponse<>(
         pageNumber,

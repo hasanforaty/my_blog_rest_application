@@ -2,11 +2,15 @@ package com.hasan.foraty.myblogapplication.service.impl;
 
 import com.hasan.foraty.myblogapplication.entity.Post;
 import com.hasan.foraty.myblogapplication.exception.ResourceNotFoundException;
+import com.hasan.foraty.myblogapplication.payload.PaginationResponse;
 import com.hasan.foraty.myblogapplication.payload.PostDto;
 import com.hasan.foraty.myblogapplication.repository.PostRepository;
 import com.hasan.foraty.myblogapplication.service.PostService;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,8 +31,22 @@ public class PostServiceImpl implements
   }
 
   @Override
-  public List<PostDto> getAllPosts() {
-    return postRepository.findAll().stream().map(this::mapToDTO).collect(
+  public PaginationResponse<PostDto> getPostsWithPagination(int pageNumber,int pageSize) {
+
+    Pageable pageable = PageRequest.of(pageNumber,pageSize);
+    Page<Post> pages= postRepository.findAll(pageable);
+    return new PaginationResponse<>(
+        pageNumber,
+        pages.getTotalPages(),
+        pageSize,
+        pages.getTotalElements(),
+        pages.getContent().stream().map(this::mapToDTO).collect(Collectors.toList())
+        );
+  }
+
+  @Override
+  public List<PostDto> getAllPost() {
+        return postRepository.findAll().stream().map(this::mapToDTO).collect(
         Collectors.toList());
   }
 

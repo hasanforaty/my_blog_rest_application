@@ -6,9 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,25 +19,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "post")
-public class Post {
-
+@Table(name = "comments")
+public class Comments {
   @Id
-  @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  int id;
+  @Column(name = "body",nullable = false)
+  String body;
+  @Column(name = "email",nullable = false)
+  String email;
+  @Column(name = "name",nullable = false)
+  String name;
 
-
-  @Column(name = "title",unique = true,nullable = false)
-  private String title;
-
-  @Column(name = "description",nullable = false)
-  private String description;
-
-  @Column(name = "content",nullable = false)
-  private String content;
-
-  @OneToMany(mappedBy = "post",cascade = {CascadeType.ALL})
-  List<Comments> comments;
-
+  @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+  @JoinColumn(name = "post_id")
+  Post post;
 }

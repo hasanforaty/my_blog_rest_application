@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostServiceImpl implements
@@ -24,6 +25,7 @@ public class PostServiceImpl implements
     this.postRepository = postRepository;
   }
 
+  @Transactional
   @Override
   public PostDto createPost(PostDto postDto) {
     Post myPost = mapToEntity(postDto);
@@ -70,6 +72,7 @@ public class PostServiceImpl implements
     return mapToDTO(getPost.orElseThrow(()->new ResourceNotFoundException("Get Post ","id",id.toString())));
   }
 
+  @Transactional
   @Override
   public PostDto updatePost(PostDto postDto, Long id) {
     Post post =postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Post ","id",String.valueOf(id)));
@@ -82,6 +85,7 @@ public class PostServiceImpl implements
     return mapToDTO(requestPost);
   }
 
+  @Transactional
   @Override
   public void deletePost(Long id) {
     Post post = postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Post ","id",String.valueOf(id)));

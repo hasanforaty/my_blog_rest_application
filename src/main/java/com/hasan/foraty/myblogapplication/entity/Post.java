@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,6 +39,15 @@ public class Post {
   private String content;
 
   @OneToMany(mappedBy = "post",cascade = {CascadeType.ALL})
-  List<Comments> comments;
+  List<Comment> comments;
+
+  public void addComment(Comment comment){
+    if(comments==null){
+      comments = new ArrayList<>();
+    }
+    comments.add(comment);
+  }
+
+
 
 }

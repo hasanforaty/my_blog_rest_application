@@ -8,6 +8,7 @@ import com.hasan.foraty.myblogapplication.repository.PostRepository;
 import com.hasan.foraty.myblogapplication.service.PostService;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +20,11 @@ import org.springframework.stereotype.Service;
 public class PostServiceImpl implements
     PostService {
   private final PostRepository postRepository;
+  private final ModelMapper modelMapper;
 
-  public PostServiceImpl(PostRepository postRepository) {
+  public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
     this.postRepository = postRepository;
+    this.modelMapper = modelMapper;
   }
 
 
@@ -93,13 +96,13 @@ public class PostServiceImpl implements
 
 
   private PostDto mapToDTO(Post post){
-    return new PostDto(post.getId(),post.getTitle(),post.getDescription(),post.getContent());
+    return modelMapper.map(post,PostDto.class);
   }
   private Post mapToEntity(PostDto postDto){
-    Post myPost = new Post();
-    myPost.setContent(postDto.getContent());
-    myPost.setDescription(postDto.getDescription());
-    myPost.setTitle(postDto.getTitle());
-    return myPost;
+    //    myPost.setContent(postDto.getContent());
+//    myPost.setDescription(postDto.getDescription());
+//    myPost.setTitle(postDto.getTitle());
+
+    return modelMapper.map(postDto,Post.class);
   }
 }

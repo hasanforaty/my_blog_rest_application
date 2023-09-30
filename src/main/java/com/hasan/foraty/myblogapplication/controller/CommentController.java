@@ -2,7 +2,7 @@ package com.hasan.foraty.myblogapplication.controller;
 
 import com.hasan.foraty.myblogapplication.payload.CommentDto;
 import com.hasan.foraty.myblogapplication.payload.PaginationResponse;
-import com.hasan.foraty.myblogapplication.service.impl.CommentService;
+import com.hasan.foraty.myblogapplication.service.CommentService;
 import com.hasan.foraty.myblogapplication.utils.AppConstance;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

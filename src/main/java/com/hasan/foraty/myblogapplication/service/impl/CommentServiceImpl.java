@@ -1,4 +1,4 @@
-package com.hasan.foraty.myblogapplication.service;
+package com.hasan.foraty.myblogapplication.service.impl;
 
 import com.hasan.foraty.myblogapplication.entity.Comment;
 import com.hasan.foraty.myblogapplication.entity.Post;
@@ -8,9 +8,10 @@ import com.hasan.foraty.myblogapplication.payload.CommentDto;
 import com.hasan.foraty.myblogapplication.payload.PaginationResponse;
 import com.hasan.foraty.myblogapplication.repository.CommentRepository;
 import com.hasan.foraty.myblogapplication.repository.PostRepository;
-import com.hasan.foraty.myblogapplication.service.impl.CommentService;
+import com.hasan.foraty.myblogapplication.service.CommentService;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +26,13 @@ public class CommentServiceImpl implements
 
   private final CommentRepository commentRepository;
   private final PostRepository postRepository;
+  private final ModelMapper modelMapper;
 
-  public CommentServiceImpl(CommentRepository commentRepository,PostRepository postRepository) {
+  public CommentServiceImpl(CommentRepository commentRepository,PostRepository postRepository,
+      ModelMapper modelMapper) {
     this.commentRepository = commentRepository;
     this.postRepository = postRepository;
+    this.modelMapper = modelMapper;
   }
 
   @Override
@@ -111,18 +115,17 @@ public class CommentServiceImpl implements
 
 
   private Comment mapFromDTO(CommentDto commentDto){
-    Comment myComment= new Comment();
-    myComment.setBody(commentDto.getComment());
-    myComment.setName(commentDto.getName());
-    myComment.setEmail(commentDto.getEmail());
-    return myComment;
+    //    myComment.setBody(commentDto.getComment());
+//    myComment.setName(commentDto.getName());
+//    myComment.setEmail(commentDto.getEmail());
+
+    return modelMapper.map(commentDto,Comment.class);
   }
   private CommentDto mapToDTO(Comment comment){
-    CommentDto myCommentDTO = new CommentDto();
-    myCommentDTO.setComment(comment.getBody());
-    myCommentDTO.setName(comment.getName());
-    myCommentDTO.setEmail(comment.getEmail());
-    myCommentDTO.setId(comment.getId());
-    return myCommentDTO;
+    //    myCommentDTO.setComment(comment.getBody());
+//    myCommentDTO.setName(comment.getName());
+//    myCommentDTO.setEmail(comment.getEmail());
+//    myCommentDTO.setId(comment.getId());
+    return modelMapper.map(comment,CommentDto.class);
   }
 }

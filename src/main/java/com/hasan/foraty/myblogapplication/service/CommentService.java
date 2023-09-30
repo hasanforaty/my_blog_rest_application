@@ -1,4 +1,4 @@
-package com.hasan.foraty.myblogapplication.service.impl;
+package com.hasan.foraty.myblogapplication.service;
 
 import com.hasan.foraty.myblogapplication.payload.CommentDto;
 import com.hasan.foraty.myblogapplication.payload.PaginationResponse;

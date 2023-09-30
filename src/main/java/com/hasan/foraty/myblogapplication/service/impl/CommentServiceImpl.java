@@ -78,7 +78,7 @@ public class CommentServiceImpl implements
 
   @Override
   public CommentDto getCommentById(long postId, long commentId) {
-    Comment comment = getComment(postId,commentId);
+    Comment comment = getComment(commentId,postId);
     return mapToDTO(comment);
   }
 

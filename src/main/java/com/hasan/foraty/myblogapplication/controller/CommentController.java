@@ -5,6 +5,8 @@ import com.hasan.foraty.myblogapplication.payload.PaginationResponse;
 import com.hasan.foraty.myblogapplication.service.CommentService;
 import com.hasan.foraty.myblogapplication.utils.AppConstance;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +29,7 @@ public class CommentController {
   }
 
   @PostMapping
-  public ResponseEntity<CommentDto> createComment(@PathVariable(name = "post_id") long postId,@RequestBody CommentDto commentDto){
+  public ResponseEntity<CommentDto> createComment(@Valid @PathVariable(name = "post_id") long postId, @RequestBody CommentDto commentDto){
     return ResponseEntity.ok(commentService.createComment(commentDto,postId));
   }
   @GetMapping("/all")
@@ -58,7 +60,7 @@ public class CommentController {
   ResponseEntity<CommentDto> updateComment(
       @PathVariable("post_id")long postId,
       @PathVariable("comment_id")long commentId,
-      @RequestBody CommentDto commentDto
+      @Valid @RequestBody CommentDto commentDto
   ){
     return ResponseEntity.ok(commentService.updateComment(commentDto,commentId,postId));
   }

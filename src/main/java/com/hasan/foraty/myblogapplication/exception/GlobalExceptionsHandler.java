@@ -1,9 +1,15 @@
 package com.hasan.foraty.myblogapplication.exception;
 
 import com.hasan.foraty.myblogapplication.payload.ErrorDetails;
-import java.util.Date;
+
+import java.util.*;
+
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -30,6 +36,27 @@ public class GlobalExceptionsHandler {
 
     return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
   }
+
+
+
+  @ExceptionHandler
+  ResponseEntity<ErrorDetails> handleValidationException(MethodArgumentNotValidException methodArgumentNotValidException, WebRequest webRequest){
+
+    ErrorDetails errorDetails = new ErrorDetails();
+    Map<String ,String > errors = new HashMap<>();
+    List<ObjectError> objectErrors = methodArgumentNotValidException.getBindingResult().getAllErrors();
+    for (ObjectError objectError : objectErrors){
+      String fieldName = ((FieldError) objectError).getField();
+      String massage = objectError.getDefaultMessage();
+      errors.put(fieldName,massage);
+    }
+    errorDetails.setMessage(String.valueOf(errors));
+
+    errorDetails.setDetails(webRequest.getDescription(false));
+    errorDetails.setTimestamp(new Date());
+    return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
+  }
+
 
   @ExceptionHandler
   ResponseEntity<ErrorDetails> HandleGlobalException(Exception exception,WebRequest webRequest){

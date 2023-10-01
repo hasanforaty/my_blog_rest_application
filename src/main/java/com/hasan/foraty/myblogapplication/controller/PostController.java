@@ -5,6 +5,8 @@ import com.hasan.foraty.myblogapplication.payload.PostDto;
 import com.hasan.foraty.myblogapplication.service.PostService;
 import com.hasan.foraty.myblogapplication.utils.AppConstance;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,7 +45,7 @@ public class PostController {
    * @return the response entity
    */
   @PostMapping
-  ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
+  ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
     return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
   }
 
@@ -97,7 +99,7 @@ public class PostController {
    * @return the response entity
    */
   @PutMapping("/{id}")
-  ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,@PathVariable long id){
+  ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto,@PathVariable long id){
     return ResponseEntity.ok(postService.updatePost(postDto,id));
   }
 

@@ -1,18 +1,20 @@
 package com.hasan.foraty.myblogapplication.exception;
 
 import com.hasan.foraty.myblogapplication.payload.ErrorDetails;
-
-import java.util.*;
-
-import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionsHandler {
@@ -55,6 +57,18 @@ public class GlobalExceptionsHandler {
     errorDetails.setDetails(webRequest.getDescription(false));
     errorDetails.setTimestamp(new Date());
     return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
+  }
+
+
+
+  @ExceptionHandler
+  ResponseEntity<ErrorDetails> handleAccessDeniedException(AccessDeniedException exception, WebRequest webRequest){
+
+    ErrorDetails errorDetails = new ErrorDetails();
+    errorDetails.setDetails(webRequest.getDescription(false));
+    errorDetails.setTimestamp(new Date());
+    errorDetails.setMessage(exception.getMessage());
+    return new ResponseEntity<>(errorDetails,HttpStatus.UNAUTHORIZED);
   }
 
 

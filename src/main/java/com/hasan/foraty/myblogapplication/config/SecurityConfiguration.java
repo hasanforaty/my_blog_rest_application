@@ -1,5 +1,6 @@
 package com.hasan.foraty.myblogapplication.config;
 
+import com.hasan.foraty.myblogapplication.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,17 +12,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 public class SecurityConfiguration {
-
     @Bean
     public PasswordEncoder getPasswordEncoder(){
       return new BCryptPasswordEncoder();
     }
+
 //    @Bean
 //    public InMemoryUserDetailsManager userDetailsManager(){
 //        InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
@@ -59,6 +61,8 @@ public class SecurityConfiguration {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize-> {
+                    authorize.requestMatchers(HttpMethod.POST,"/api/auth/**")
+                            .permitAll();
                     authorize.requestMatchers(HttpMethod.GET,"/api/**")
                             .hasAnyRole("ADMIN","USER");
                     authorize.requestMatchers(HttpMethod.PUT,"/api/**")

@@ -11,6 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -48,4 +50,12 @@ public class Users {
   )
   @JoinTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
   List<Roles> roles;
+
+  public void addRole(Roles role){
+    if(roles==null){
+      roles = new ArrayList<>();
+    }
+    roles.add(role);
+  }
+
 }

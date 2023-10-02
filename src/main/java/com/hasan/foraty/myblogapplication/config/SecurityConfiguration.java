@@ -1,6 +1,5 @@
 package com.hasan.foraty.myblogapplication.config;
 
-import com.hasan.foraty.myblogapplication.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -23,30 +21,6 @@ public class SecurityConfiguration {
     public PasswordEncoder getPasswordEncoder(){
       return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsManager(){
-//        InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password("{bcrypt}$2a$12$purpvhO0t1C9CdU/k9oS5eeqFvVIJ9OA/hHSNHA5eZQvclnZWrmde")
-//                .authorities(Roles.ADMIN.getAuthorities())
-//                .build();
-//        UserDetails hasan = User.builder()
-//                        .username("hasan")
-//                                .password("{noop}hasanf12345")
-//                                        .authorities(Roles.USER.getAuthorities())
-//                                                .build();
-//        inMemoryUserDetailsManager.createUser(hasan);
-//        inMemoryUserDetailsManager.createUser(admin);
-//        return inMemoryUserDetailsManager;
-//    }
-//
-//    @Bean
-//    public UserDetailsManager getUserDetailManager(DataSource dataSource){
-//      return  new JdbcUserDetailsManager(dataSource);
-//    }
-
   @Bean
   AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
       throws Exception {
@@ -58,6 +32,10 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationEntryPoint authenticationEntryPoint,
         @Qualifier("customAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler) throws Exception {
+        httpSecurity.exceptionHandling((ex)->{
+            ex.accessDeniedHandler(accessDeniedHandler);
+            ex.authenticationEntryPoint(authenticationEntryPoint);
+        });
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize-> {
@@ -74,11 +52,6 @@ public class SecurityConfiguration {
                 })
                 .httpBasic(Customizer.withDefaults())
         ;
-        httpSecurity.exceptionHandling((ex)->{
-          ex.accessDeniedHandler(accessDeniedHandler);
-          ex.authenticationEntryPoint(authenticationEntryPoint);
-        });
-
 
         return httpSecurity.build();
     }

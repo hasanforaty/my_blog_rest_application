@@ -2,12 +2,11 @@ package com.hasan.foraty.myblogapplication;
 
 import com.hasan.foraty.myblogapplication.entity.Users;
 import com.hasan.foraty.myblogapplication.payload.SignUpDto;
-import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class ModelMapperTest {

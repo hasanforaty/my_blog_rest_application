@@ -12,9 +12,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Component("customAccessDeniedHandler")
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
-
-  private HandlerExceptionResolver resolver;
-
+  private final HandlerExceptionResolver resolver;
   public CustomAccessDeniedHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
     this.resolver = resolver;
   }

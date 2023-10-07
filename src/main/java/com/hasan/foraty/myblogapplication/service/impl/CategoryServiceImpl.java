@@ -60,4 +60,9 @@ public class CategoryServiceImpl implements CategoryService {
     Category saved =repository.save(modelMapper.map(categoryDto,Category.class));
     return modelMapper.map(saved,CategoryDto.class);
   }
+
+  @Override
+  public void deleteCategory(long id) {
+    repository.deleteById(id);
+  }
 }

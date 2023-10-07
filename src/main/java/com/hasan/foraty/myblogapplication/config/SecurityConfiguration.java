@@ -1,6 +1,6 @@
 package com.hasan.foraty.myblogapplication.config;
 
-import com.hasan.foraty.myblogapplication.security.JwtAuthenticationFilter;
+ import com.hasan.foraty.myblogapplication.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
     @Bean
     public PasswordEncoder getPasswordEncoder(){
-      return new BCryptPasswordEncoder();a
+      return new BCryptPasswordEncoder();
     }
   @Bean
   AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)

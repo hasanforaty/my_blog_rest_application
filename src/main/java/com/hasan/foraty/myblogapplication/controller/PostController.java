@@ -63,10 +63,11 @@ public class PostController {
       @RequestParam(value = "pageNumber",defaultValue = AppConstance.DEFAULT_PAGE_NUMBER,required = false) int pageNum,
       @RequestParam(value = "pageSize",defaultValue = AppConstance.DEFAULT_PAGE_SIZE,required = false)int pageSize,
       @RequestParam(value = "sortBy",defaultValue = AppConstance.DEFAULT_SORT_BY,required = false)String sortBy,
-      @RequestParam(value = "sortDir",defaultValue = AppConstance.DEFAULT_SORT_DIRECTION,required = false)String sortDir
+      @RequestParam(value = "sortDir",defaultValue = AppConstance.DEFAULT_SORT_DIRECTION,required = false)String sortDir,
+      @RequestParam(value = "categoryId",defaultValue = "-1",required = false)long categoryId
       ){
 
-    return new ResponseEntity<>(postService.getPostsWithPagination(pageNum,pageSize,sortBy,sortDir),HttpStatus.OK);
+    return new ResponseEntity<>(postService.getPostsWithPagination(pageNum,pageSize,sortBy,sortDir,categoryId),HttpStatus.OK);
   }
 
   /**

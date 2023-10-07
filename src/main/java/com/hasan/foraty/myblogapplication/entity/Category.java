@@ -6,9 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,5 +33,13 @@ public class Category {
 
   @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true)
   List<Post> posts;
+
+  public void addPost(Post post){
+    if(posts==null){
+      posts = new ArrayList<>();
+    }
+    posts.add(post);
+  }
+
 
 }

@@ -1,5 +1,6 @@
 package com.hasan.foraty.myblogapplication.config;
 
+import com.hasan.foraty.myblogapplication.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,17 +10,19 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfiguration {
     @Bean
     public PasswordEncoder getPasswordEncoder(){
-      return new BCryptPasswordEncoder();
+      return new BCryptPasswordEncoder();a
     }
   @Bean
   AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
@@ -30,7 +33,7 @@ public class SecurityConfiguration {
 
     
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationEntryPoint authenticationEntryPoint,
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationEntryPoint authenticationEntryPoint, JwtAuthenticationFilter jwtAuthenticationFilter,
         @Qualifier("customAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler) throws Exception {
         httpSecurity.exceptionHandling((ex)->{
             ex.accessDeniedHandler(accessDeniedHandler);
@@ -50,8 +53,11 @@ public class SecurityConfiguration {
                     authorize.requestMatchers(HttpMethod.DELETE,"/api/**")
                         .hasAnyRole("ADMIN");
                 })
+                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
         ;
+
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

@@ -1,5 +1,6 @@
 package com.hasan.foraty.myblogapplication.controller;
 
+import com.hasan.foraty.myblogapplication.payload.JWTAuthResponse;
 import com.hasan.foraty.myblogapplication.payload.LoginDto;
 import com.hasan.foraty.myblogapplication.payload.SignUpDto;
 import com.hasan.foraty.myblogapplication.service.AuthService;
@@ -20,8 +21,11 @@ public class AuthController {
     }
 
     @PostMapping(value = {"/login","/sign_in"})
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
-        return ResponseEntity.ok(authService.login(loginDto));
+    public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDto loginDto){
+        String  token = authService.login(loginDto);
+        var response = new JWTAuthResponse();
+        response.setAccessToken(token);
+        return ResponseEntity.ok(response);
     }
     @PostMapping({"/register","sing_up"})
     public ResponseEntity<String > register(@RequestBody SignUpDto signUpDto){

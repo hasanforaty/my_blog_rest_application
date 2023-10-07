@@ -7,6 +7,7 @@ import com.hasan.foraty.myblogapplication.payload.LoginDto;
 import com.hasan.foraty.myblogapplication.payload.SignUpDto;
 import com.hasan.foraty.myblogapplication.repository.RoleRepository;
 import com.hasan.foraty.myblogapplication.repository.UserRepository;
+import com.hasan.foraty.myblogapplication.security.JwtTokenProvider;
 import com.hasan.foraty.myblogapplication.service.AuthService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -25,24 +26,25 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
+    private final JwtTokenProvider tokenProvider;
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ModelMapper modelMapper) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ModelMapper modelMapper, JwtTokenProvider tokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
     public String login(LoginDto loginDto) {
+
         Authentication authentication =authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUserNameOrEmail(),
                 loginDto.getPassword()
         ));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "User Logged-in successfully";
+        return  tokenProvider.generateToken(authentication);
     }
 
     @Override

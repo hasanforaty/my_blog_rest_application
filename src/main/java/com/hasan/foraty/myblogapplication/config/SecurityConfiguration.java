@@ -47,11 +47,11 @@ public class SecurityConfiguration {
                     authorize.requestMatchers(HttpMethod.GET,"/api/**")
                             .hasAnyRole("ADMIN","USER");
                     authorize.requestMatchers(HttpMethod.PUT,"/api/**")
-                        .hasAnyRole("ADMIN");
+                        .hasRole("ADMIN");
                     authorize.requestMatchers(HttpMethod.POST,"/api/**")
-                        .hasAnyRole("ADMIN");
+                        .hasRole("ADMIN");
                     authorize.requestMatchers(HttpMethod.DELETE,"/api/**")
-                        .hasAnyRole("ADMIN");
+                        .hasRole("ADMIN");
                 })
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())

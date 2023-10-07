@@ -1,6 +1,8 @@
 package com.hasan.foraty.myblogapplication;
 
+import com.hasan.foraty.myblogapplication.entity.Category;
 import com.hasan.foraty.myblogapplication.entity.Users;
+import com.hasan.foraty.myblogapplication.payload.CategoryDto;
 import com.hasan.foraty.myblogapplication.payload.SignUpDto;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -32,4 +34,29 @@ public class ModelMapperTest {
         assertEquals(users.getPassword(),password);
 
     }
+
+    @Test
+    void CategoryDTOToCategory(){
+        ModelMapper modelMapper = new ModelMapper();
+        CategoryDto categoryDto = new CategoryDto(10l,"hasan","test");
+        Category category = modelMapper.map(categoryDto, Category.class);
+        assertEquals(category.getId(),categoryDto.getId());
+        assertEquals(category.getDescription(),categoryDto.getDescription());
+        assertEquals(category.getName(),categoryDto.getName());
+    }
+    @Test
+    void CategoryToCategoryDTO(){
+        ModelMapper modelMapper = new ModelMapper();
+        Category category = new Category();
+
+        category.setDescription("Hi");
+        category.setName("Hasan");
+        CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
+        assertEquals(categoryDto.getId(),category.getId());
+        assertEquals(categoryDto.getDescription(),category.getDescription());
+        assertEquals(categoryDto.getName(),category.getName());
+
+    }
+
+
 }

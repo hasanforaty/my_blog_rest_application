@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.jaxb.SpringDataJaxb.PageDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,5 +51,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     return new PaginationResponse<>(pageN,page.getTotalPages(),perPage,page.getTotalElements(),page.get().map((ob)->modelMapper.map(ob,CategoryDto.class)).collect(
         Collectors.toList()));
+  }
+
+  @Override
+  public CategoryDto updateCategory(long id, CategoryDto categoryDto) {
+    repository.findById(id).orElseThrow(()->new ResourceNotFoundException("category","id",String.valueOf(id)));
+    categoryDto.setId(id);
+    Category saved =repository.save(modelMapper.map(categoryDto,Category.class));
+    return modelMapper.map(saved,CategoryDto.class);
   }
 }

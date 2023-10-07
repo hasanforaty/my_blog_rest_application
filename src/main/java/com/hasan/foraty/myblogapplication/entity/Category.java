@@ -31,7 +31,7 @@ public class Category {
   @Column(name = "description")
   private String description;
 
-  @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true)
+  @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
   List<Post> posts;
 
   public void addPost(Post post){

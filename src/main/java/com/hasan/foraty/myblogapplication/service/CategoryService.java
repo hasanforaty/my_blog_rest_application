@@ -9,5 +9,6 @@ public interface CategoryService {
   CategoryDto getCategory(long id) ;
   List<CategoryDto> getAllCategory();
   PaginationResponse<CategoryDto> getAllWithPagination(int pageN,int perPage);
+  CategoryDto updateCategory(long id,CategoryDto categoryDto);
 
 }
